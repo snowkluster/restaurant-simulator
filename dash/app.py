@@ -57,29 +57,7 @@ app_layout = [
         ],
         style={'width': '100%', 'margin-left': '1vw', 'margin-right': '1vw'}
     ),
-    # html.Div(
-    #     [
-    #         dcc.Graph(
-    #             id='stacked-bar-chart',
-    #             style={'display': 'inline-block', 'height': '40vh', 'width': '44vw', 'margin-right': '1vw'},
-    #         ),
-    #         dcc.Graph(
-    #             id='total-spend',
-    #             style={'display': 'inline-block', 'height': '40vh', 'width': '23vw', 'margin-right': '1vw'},
-    #         ),
-    #         dcc.Graph(
-    #             id='pie-chart',
-    #             style={'display': 'inline-block', 'height': '40vh', 'width': '29vw'},
-    #         ),
-    #     ],
-    #     style={'width': '100%', 'margin-left': '1vw', 'margin-right': '1vw','margin-top': '1vw', 'margin-bottom': '1vw'}
-    # ),
-    # dcc.Interval(
-    #     id='interval-component',
-    #     interval=DASHBOARD_REFRESH_INTERVAL * 1000, # in milliseconds
-    #     n_intervals=0
-    # )
-# /////////////////////////
+   
 html.Div(
     [
         html.Div(
