@@ -19,7 +19,7 @@ import plotly.express as px
 import numpy as np
 # /////////////////////////////////
 import plotly.graph_objects as go
-# /////////////////////////////////
+# //////////////////////////////////
 from parameters.simulation_parameters import DASHBOARD_REFRESH_INTERVAL
 from sql import (
     all_timestamps,
@@ -119,7 +119,7 @@ dcc.Interval(
     n_intervals=0
 )
 
-# ////////////////////////////
+# /////////////////////////////
 ]
 
 app.layout = html.Div(app_layout)
