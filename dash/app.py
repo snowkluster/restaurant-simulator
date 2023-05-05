@@ -17,7 +17,9 @@ import dash_html_components as html
 import pandas as pd
 import plotly.express as px
 import numpy as np
-
+# /////////////////////////////////
+import plotly.graph_objects as go
+# //////////////////////////////////
 from parameters.simulation_parameters import DASHBOARD_REFRESH_INTERVAL
 from sql import (
     all_timestamps,
@@ -40,8 +42,8 @@ log.setLevel(logging.ERROR)
 ##      APP LAYOUT      ##
 ##########################
 app_layout = [
-    html.H4('Simulation Live Dashboard'),
-    html.H6(id='sim-time', style={'color': '#00FFFF'}),
+    html.H3('Restaurant Simulator', style={'font-size': '36px', 'text-align': 'center', 'color': '#FFFFFF', 'text-shadow': '1px 1px #fff','textDecoration': 'underline'}),
+    html.H6(id='sim-time', style={'font-size': '20px', 'text-align': 'center', 'color': '#FFFFFF', 'text-shadow': '1px 1px #fff'}),
     html.Div(
         [
             dcc.Graph(
@@ -55,28 +57,47 @@ app_layout = [
         ],
         style={'width': '100%', 'margin-left': '1vw', 'margin-right': '1vw'}
     ),
-    html.Div(
-        [
-            dcc.Graph(
-                id='stacked-bar-chart',
-                style={'display': 'inline-block', 'height': '40vh', 'width': '44vw', 'margin-right': '1vw'},
-            ),
-            dcc.Graph(
-                id='total-spend',
-                style={'display': 'inline-block', 'height': '40vh', 'width': '23vw', 'margin-right': '1vw'},
-            ),
-            dcc.Graph(
-                id='pie-chart',
-                style={'display': 'inline-block', 'height': '40vh', 'width': '29vw'},
-            ),
-        ],
-        style={'width': '100%', 'margin-left': '1vw', 'margin-right': '1vw','margin-top': '1vw', 'margin-bottom': '1vw'}
-    ),
-    dcc.Interval(
-        id='interval-component',
-        interval=DASHBOARD_REFRESH_INTERVAL * 1000, # in milliseconds
-        n_intervals=0
-    )
+   
+html.Div(
+    [
+        html.Div(
+            [
+                dcc.Graph(
+                    id='stacked-bar-chart',
+                    style={'display': 'inline-block', 'height': '40vh', 'width': '44vw', 'margin-right': '1vw'},
+                    config={'displayModeBar': False},
+                    hoverData={'points': [{'x': 0}]},
+                    animate=True
+                ),
+                
+                dcc.Graph(
+                    id='total-spend',
+                    style={'display': 'inline-block', 'height': '40vh', 'width': '23vw', 'margin-right': '1vw'},
+                    config={'displayModeBar': False},
+                    hoverData={'points': [{'x': 0}]},
+                    animate=True
+                ),
+                
+                dcc.Graph(
+                    id='pie-chart',
+                    style={'display': 'inline-block', 'height': '40vh', 'width': '29vw'},
+                    config={'displayModeBar': False},
+                    hoverData={'points': [{'x': 0}]},
+                    animate=True
+                )
+            ],
+            style={'width': '100%', 'margin': '1vw 1vw 0 1vw', 'display': 'flex', 'flex-wrap': 'wrap'}
+        )
+    ],
+    style={'margin': '1vw'}
+),
+dcc.Interval(
+    id='interval-component',
+    interval=DASHBOARD_REFRESH_INTERVAL * 1000, # in milliseconds
+    n_intervals=0
+)
+
+# /////////////////////////////
 ]
 
 app.layout = html.Div(app_layout)
@@ -159,6 +180,13 @@ def update_time_graph(n):
     }
 
     return fig
+# /////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+# /////////////////////////////////////////////////////////////////////////
 
 
 @app.callback(Output('pie-chart', 'figure'),
