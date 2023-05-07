@@ -1,4 +1,4 @@
-db/__pycache__
+db/__pycache__/
 db/css.db-journal
-db/migrations/__pycache__
-parameters/__pycache__
+db/migrations/__pycache__/
+parameters/__pycache__/
