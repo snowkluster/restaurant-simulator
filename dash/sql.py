@@ -1,5 +1,3 @@
-"""SQL Queries, returned in dataframes"""
-
 import pandas as pd
 
 from db.connection import (
@@ -9,7 +7,6 @@ from db.connection import (
 
 
 def query_to_df(sql_func):
-    """Helper to run sql and return dataframe"""
     def get_df():
         sql = sql_func()
         with css_connection() as conn:
@@ -18,7 +15,6 @@ def query_to_df(sql_func):
 
 
 def fetch_one(sql_func):
-    """Helper to run sql and return single row"""
     def get_value():
         sql = sql_func()
         with css_cursor() as cur:
@@ -64,7 +60,6 @@ def spend_by_day_and_service():
 
 @fetch_one
 def max_timestamp():
-    """Max timestamp to approximate simulator current time"""
     return """
     SELECT max(
         max(coalesce(received_at - 8*60*60,0))

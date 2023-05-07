@@ -17,9 +17,9 @@ import dash_html_components as html
 import pandas as pd
 import plotly.express as px
 import numpy as np
-# /////////////////////////////////
+
 import plotly.graph_objects as go
-# //////////////////////////////////
+
 from parameters.simulation_parameters import DASHBOARD_REFRESH_INTERVAL
 from sql import (
     all_timestamps,
@@ -34,13 +34,9 @@ from sql import (
 app = dash.Dash(__name__)
 server = app.server
 
-# suppress component update messages
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-##########################
-##      APP LAYOUT      ##
-##########################
 app_layout = [
     html.H3('Restaurant Simulator', style={'font-size': '36px', 'text-align': 'center', 'color': '#FFFFFF', 'text-shadow': '1px 1px #fff','textDecoration': 'underline'}),
     html.H6(id='sim-time', style={'font-size': '20px', 'text-align': 'center', 'color': '#FFFFFF', 'text-shadow': '1px 1px #fff'}),
@@ -93,19 +89,14 @@ html.Div(
 ),
 dcc.Interval(
     id='interval-component',
-    interval=DASHBOARD_REFRESH_INTERVAL * 1000, # in milliseconds
+    interval=DASHBOARD_REFRESH_INTERVAL * 1000, 
     n_intervals=0
 )
 
-# /////////////////////////////
 ]
 
 app.layout = html.Div(app_layout)
 
-
-##########################
-## DATA TRANSFORMATIONS ##
-##########################
 def format_ts(epoch):
     """Turn epoch into formatted PST timestamp"""
     formatted_ts = datetime.fromtimestamp(epoch).strftime('%a %m/%d %I:%M%p PST')
@@ -114,12 +105,6 @@ def format_ts(epoch):
 
 
 def get_status_over_time(df):
-    """Transform a dataframe of timestamps into statuses over time
-
-    Args:
-      df (pd.DataFrame): dataframe with received_at, started_at, and
-        completed_at columns as epoch values
-    """
     start = int(min(df['received_at']))
     end = int(max(np.concatenate([
         df["received_at"].values,
@@ -127,16 +112,13 @@ def get_status_over_time(df):
         df["completed_at"].fillna(0).values,
     ])))
 
-    # calculate status counts at different time frames
     timestamps = [ts for ts in range(start, end, 600)]
 
-    # queued: received but not yet started; awaiting kitchen resource
     queued = [(
         (df['received_at'].values <= ts) &
         (ts < df['started_at'].fillna(np.inf).values)
     ).sum() for ts in timestamps]
 
-    # in progress: started but not yet completed
     in_progress = [(
         (df['started_at'].fillna(np.inf).values <= ts) &
         (ts < df['completed_at'].fillna(np.inf).values)
@@ -149,9 +131,6 @@ def get_status_over_time(df):
     return new_df
 
 
-##########################
-##    CHART UPDATES     ##
-##########################
 @app.callback(Output('sim-time', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_time(n):
@@ -180,13 +159,6 @@ def update_time_graph(n):
     }
 
     return fig
-# /////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-# /////////////////////////////////////////////////////////////////////////
 
 
 @app.callback(Output('pie-chart', 'figure'),
@@ -297,6 +269,5 @@ def update_avg_order_time(n):
 
 
 if __name__ == '__main__':
-    # give simulator time to kick off
     time.sleep(5)
     app.run_server(host='0.0.0.0', port=8050)

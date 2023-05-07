@@ -7,11 +7,6 @@ log = logging.getLogger(__name__)
 
 @contextmanager
 def css_cursor():
-    """Callable cursor that connects to the CSS database
-
-    Commits (only) after all statements with the open cursor have been
-    successfully executed, then closes the connection
-    """
     conn = sqlite3.connect(CSS_DATABASE)
     cur = conn.cursor()
     try:
@@ -23,7 +18,6 @@ def css_cursor():
 
 @contextmanager
 def css_connection():
-    """Callable connection to the CSS database"""
     conn = sqlite3.connect(CSS_DATABASE)
     try:
         yield conn
@@ -32,14 +26,6 @@ def css_connection():
 
 
 def execute_sql(sql, cur, runtime_values=None, verbose=False):
-    """Execute SQL statement in sqlite and log
-
-    Args:
-      sql (str): sql statment to be executed
-      cur (cursor): open cursor
-      runtime_values (tuple): values to bind
-      verbose (bool): whether to log the SQL or not
-    """
     log_msg = f"Executing SQL: {sql}"
     if runtime_values:
         log_msg += f" with bindings {runtime_values}"
