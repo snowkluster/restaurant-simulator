@@ -15,4 +15,3 @@ then
 else
     echo "cannot find specified command"
 fi
-
